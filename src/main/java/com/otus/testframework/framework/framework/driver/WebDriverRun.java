@@ -21,7 +21,6 @@ import static java.lang.Thread.currentThread;
  */
 @Log4j
 public class WebDriverRun {
-
     private static Map<Long, WebDriver> DRIVERS_PER_THREAD = new ConcurrentHashMap<>(4);
     private static Collection<Thread> ALL_DRIVERS_THREADS = new ConcurrentLinkedQueue<>();
 
