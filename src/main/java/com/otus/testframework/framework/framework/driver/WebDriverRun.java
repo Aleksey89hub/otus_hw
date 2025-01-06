@@ -21,29 +21,28 @@ import static java.lang.Thread.currentThread;
  */
 @Log4j
 public class WebDriverRun {
-    private static WebDriver driver;
+
     private static Map<Long, WebDriver> DRIVERS_PER_THREAD = new ConcurrentHashMap<>(4);
     private static Collection<Thread> ALL_DRIVERS_THREADS = new ConcurrentLinkedQueue<>();
 
     public static WebDriver getDriver() {
-
+        long threadId = Thread.currentThread().getId();
+        WebDriver driver = DRIVERS_PER_THREAD.get(threadId);
         if (driver == null) {
             driver = createDriver();
+            DRIVERS_PER_THREAD.put(threadId, driver);
         }
         return driver;
     }
 
     private static WebDriver createDriver() {
         WebDriver createdDriver;
-
         switch (TestConfig.CONFIG.browser()) {
-
             case SAFARI:
                 WebDriverManager.safaridriver().setup();
                 createdDriver = new SafariDriver();
                 log.info("SafariDriver has been launched.");
                 break;
-
             default:
                 WebDriverManager.chromedriver().setup();
                 createdDriver = new ChromeDriver(new DriveOptionUtils().getChromeOptions());

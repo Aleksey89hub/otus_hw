@@ -1,7 +1,6 @@
 package com.otus.testframework.framework.framework.utils;
 
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,23 +45,36 @@ public class CourseInfo {
 
 
     public static Map<String, List<CourseInfo>> findEarliestAndLatestCourses(Map<String, CourseInfo> courses) {
+
         Map<LocalDate, List<CourseInfo>> groupedByDate = courses.values().stream()
                 .collect(Collectors.groupingBy(CourseInfo::getStartDate));
 
-        LocalDate earliestDate = groupedByDate.keySet().stream()
-                .min(LocalDate::compareTo)
-                .orElseThrow(() -> new RuntimeException("No courses found"));
+        Map<String, List<CourseInfo>> result = groupedByDate.entrySet().stream()
+                .reduce(
+                        new HashMap<String, List<CourseInfo>>() {{
+                            put("Earliest", null);
+                            put("Latest", null);
+                        }},
+                        (accumulator, entry) -> {
+                            LocalDate date = entry.getKey();
+                            List<CourseInfo> coursesList = entry.getValue();
 
-        LocalDate latestDate = groupedByDate.keySet().stream()
-                .max(LocalDate::compareTo)
-                .orElseThrow(() -> new RuntimeException("No courses found"));
+                            if (accumulator.get("Earliest") == null || date.isBefore(accumulator.get("Earliest")
+                                    .get(0).getStartDate())) {
+                                accumulator.put("Earliest", coursesList);
+                            }
 
-        List<CourseInfo> earliestCourses = groupedByDate.getOrDefault(earliestDate, Collections.emptyList());
-        List<CourseInfo> latestCourses = groupedByDate.getOrDefault(latestDate, Collections.emptyList());
+                            if (accumulator.get("Latest") == null || date.isAfter(accumulator.get("Latest")
+                                    .get(0).getStartDate())) {
+                                accumulator.put("Latest", coursesList);
+                            }
 
-        Map<String, List<CourseInfo>> result = new HashMap<>();
-        result.put("Earliest", earliestCourses);
-        result.put("Latest", latestCourses);
+                            return accumulator;
+                        },
+                        (map1, map2) -> {
+                            throw new UnsupportedOperationException("Parallel reduction is not supported");
+                        }
+                );
 
         return result;
     }
