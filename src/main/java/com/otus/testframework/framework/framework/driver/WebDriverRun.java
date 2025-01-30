@@ -9,9 +9,11 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.safari.SafariDriver;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.stream.Collectors;
 
 import static java.lang.Thread.currentThread;
 
@@ -74,4 +76,14 @@ public class WebDriverRun {
         DRIVERS_PER_THREAD.put(currentThread().getId(), webDriver);
         ALL_DRIVERS_THREADS.add(currentThread());
     }
+    public static List<String> friend(List<String> x){
+
+        return x.stream().filter(str ->str.length() <=4).collect(Collectors.toList());
+    }
+
+    public static void main(String[] args) {
+        System.out.println(friend(List.of("Ryan","Kieran")));
+
+    }
 }
+

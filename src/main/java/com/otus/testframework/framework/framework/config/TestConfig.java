@@ -25,5 +25,10 @@ public interface TestConfig extends Config {
     BrowserName browser();
 
     @Key("orgURL")
-    String orgURL();
+    default String orgURL() {
+        return null;
+    }
+
+    @Key("urlAPI")
+    String urlAPI();
 }
