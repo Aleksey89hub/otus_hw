@@ -3,7 +3,6 @@ package com.otus.testframework.framework.framework.pages;
 import com.otus.testframework.framework.framework.config.TestConfig;
 import com.otus.testframework.framework.framework.driver.WebDriverRun;
 import com.otus.testframework.framework.framework.utils.AdditionalConditions;
-import lombok.extern.log4j.Log4j;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -25,7 +24,6 @@ import java.util.function.Supplier;
  * Provides common functionality for interacting with web elements and managing WebDriver actions.
  */
 
-@Log4j
 public abstract class AbstractWebPage implements WebDriverListener {
 
     private static final long DEFAULT_TIMEOUT_TO_WAIT = 40;

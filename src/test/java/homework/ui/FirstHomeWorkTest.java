@@ -1,4 +1,4 @@
-package homework;
+package homework.ui;
 
 import com.otus.testframework.framework.enums.CourseCategory;
 import com.otus.testframework.framework.framework.pages.CoursesPage;

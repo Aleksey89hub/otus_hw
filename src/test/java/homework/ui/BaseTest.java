@@ -1,4 +1,4 @@
-package homework;
+package homework.ui;
 
 import com.otus.testframework.framework.framework.driver.WebDriverRun;
 import lombok.extern.log4j.Log4j;

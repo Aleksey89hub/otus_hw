@@ -6,6 +6,8 @@ import com.otus.testframework.framework.framework.config.TestConfig;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import static io.restassured.RestAssured.given;
 
@@ -14,11 +16,13 @@ import static io.restassured.RestAssured.given;
  * It tests the functionality of creating users (POST /user)
  * and retrieving user details (GET /user/{username}) to ensure the API behaves as expected.
  */
+
+@Service
 public class PetStoreIpi {
 
     private RequestSpecification spec;
     private static final String BASE_URL = TestConfig.CONFIG.urlAPI();
-    private static Faker faker = new Faker();
+    private static final Faker faker = new Faker();
     private static final String USER_PATH = "/user";
     private static final String RETRIEVE_USER = "/{username}";
     private static final String LOGIN_USER = "/login";
@@ -69,6 +73,15 @@ public class PetStoreIpi {
                 .firstName(faker.name().firstName())
                 .password(faker.internet().password())
                 .build();
+    }
+
+    public ValidatableResponse deleteUserByUsername(String username) {
+        return given(spec)
+                .pathParam("username", username)
+                .when()
+                .delete(USER_PATH + RETRIEVE_USER)
+                .then()
+                .log().ifValidationFails();
     }
 
 }
