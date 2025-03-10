@@ -20,7 +20,7 @@ public class MainPage extends AbstractWebPage {
     @FindBy(xpath = "//nav//span[contains(text(),'Обучение')]")
     private WebElement learningOptionBtn;
 
-    @FindBy(xpath = "//div[contains(@class,'gXAYGA')]//a[contains(@class,'dNitgt')]")
+    @FindBy(xpath = "//div[contains(@class,'fRJDe')]//a[contains(@class,'dNitgt')]")
     private List<WebElement> coursesOptions;
 
 

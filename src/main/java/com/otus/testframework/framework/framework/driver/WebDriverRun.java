@@ -9,11 +9,9 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.safari.SafariDriver;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.stream.Collectors;
 
 import static java.lang.Thread.currentThread;
 
@@ -55,17 +53,36 @@ public class WebDriverRun {
     }
 
     public static void quitAllDrivers() {
-        ALL_DRIVERS_THREADS.forEach(WebDriverRun::quitDriver);
+        log.info("Attempting to quit all WebDriver instances...");
+
+        if (DRIVERS_PER_THREAD.isEmpty()) {
+            log.warn("No WebDriver instances found to quit.");
+            return;
+        }
+
+        for (Map.Entry<Long, WebDriver> entry : DRIVERS_PER_THREAD.entrySet()) {
+            WebDriver driver = entry.getValue();
+            if (driver != null) {
+                try {
+                    log.info("Quitting WebDriver instance for thread ID: " + entry.getKey());
+                    driver.quit();
+                } catch (WebDriverException e) {
+                    log.error("Failed to quit driver: " + e.getMessage());
+                }
+            }
+        }
+        DRIVERS_PER_THREAD.clear();
     }
+
 
     private static void quitDriver(Thread thread) {
         long threadId = thread.getId();
-        ALL_DRIVERS_THREADS.remove(thread);
-        WebDriver webdriver = DRIVERS_PER_THREAD.remove(threadId);
+        WebDriver driver = DRIVERS_PER_THREAD.remove(threadId);
 
-        if (webdriver != null) {
+        if (driver != null) {
             try {
-                webdriver.quit();
+                log.info("Quitting WebDriver instance for thread ID: " + threadId);
+                driver.quit();
             } catch (WebDriverException e) {
                 log.error("Failed to quit driver: " + e.getMessage());
             }
@@ -76,14 +93,6 @@ public class WebDriverRun {
         DRIVERS_PER_THREAD.put(currentThread().getId(), webDriver);
         ALL_DRIVERS_THREADS.add(currentThread());
     }
-    public static List<String> friend(List<String> x){
 
-        return x.stream().filter(str ->str.length() <=4).collect(Collectors.toList());
-    }
-
-    public static void main(String[] args) {
-        System.out.println(friend(List.of("Ryan","Kieran")));
-
-    }
 }
 

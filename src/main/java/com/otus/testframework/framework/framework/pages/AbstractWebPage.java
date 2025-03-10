@@ -48,12 +48,10 @@ public abstract class AbstractWebPage implements WebDriverListener {
                 .ignoring(StaleElementReferenceException.class);
     }
 
-
     public void navigateTo(String relativePath) {
         String fullPath = BASE_URL + relativePath;
         driver.get(fullPath);
     }
-
 
     protected boolean shortWaitUntil(Supplier<Boolean> condition) {
         return getWebDriverWait(SHORT_TIMEOUT_TO_WAIT).until(AdditionalConditions.isTrue(condition));
@@ -95,7 +93,6 @@ public abstract class AbstractWebPage implements WebDriverListener {
             js.executeScript(script, element);
         }
     }
-
 
     @Override
     public void beforeClick(WebElement element) {

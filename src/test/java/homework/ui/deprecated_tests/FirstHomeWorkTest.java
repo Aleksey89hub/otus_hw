@@ -1,4 +1,4 @@
-package homework.ui;
+package homework.ui.deprecated_tests;
 
 import com.otus.testframework.framework.enums.CourseCategory;
 import com.otus.testframework.framework.framework.pages.CoursesPage;
@@ -9,6 +9,7 @@ import jdk.jfr.Description;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
 import java.util.List;
 import java.util.Map;
 

@@ -1,4 +1,4 @@
-package homework.ui;
+package homework.ui.deprecated_tests;
 
 import com.otus.testframework.framework.framework.driver.WebDriverRun;
 import lombok.extern.log4j.Log4j;
